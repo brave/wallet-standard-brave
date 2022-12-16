@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "@solana/wallet-standard-ghost",
+    "name": "wallet-standard-brave",
     "author": "Solana Maintainers <maintainers@solana.foundation>",
     "repository": "https://github.com/solana-labs/wallet-standard",
     "license": "Apache-2.0",

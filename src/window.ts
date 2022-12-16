@@ -1,17 +1,17 @@
 import type { PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js';
 
-export interface GhostEvent {
+export interface BraveWalletEvent {
     connect(...args: unknown[]): unknown;
     disconnect(...args: unknown[]): unknown;
     accountChanged(...args: unknown[]): unknown;
 }
 
-export interface GhostEventEmitter {
-    on<E extends keyof GhostEvent>(event: E, listener: GhostEvent[E], context?: any): void;
-    off<E extends keyof GhostEvent>(event: E, listener: GhostEvent[E], context?: any): void;
+export interface BraveWalletEventEmitter {
+    on<E extends keyof BraveWalletEvent>(event: E, listener: BraveWalletEvent[E], context?: any): void;
+    off<E extends keyof BraveWalletEvent>(event: E, listener: BraveWalletEvent[E], context?: any): void;
 }
 
-export interface Ghost extends GhostEventEmitter {
+export interface BraveWallet extends BraveWalletEventEmitter {
     publicKey: PublicKey | null;
     connect(options?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }>;
     disconnect(): Promise<void>;

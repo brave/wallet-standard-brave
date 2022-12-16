@@ -1,7 +1,7 @@
 import { registerWallet } from './register.js';
-import { GhostWallet } from './wallet.js';
-import type { Ghost } from './window.js';
+import { BraveWalletWallet } from './wallet.js';
+import type { BraveWallet } from './window.js';
 
-export function initialize(ghost: Ghost): void {
-    registerWallet(new GhostWallet(ghost));
+export function initialize(braveWallet: BraveWallet): void {
+    registerWallet(new BraveWalletWallet(braveWallet));
 }
