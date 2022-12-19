@@ -16,6 +16,10 @@
         "import": "./lib/esm/index.js",
         "types": "./lib/types/index.d.ts"
     },
+    "files": [
+      "/lib",
+      "/src"
+    ],
     "scripts": {
         "fmt": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,json}'",
         "clean": "shx mkdir -p lib && shx rm -rf lib",
