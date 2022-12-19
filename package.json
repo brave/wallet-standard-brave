@@ -1,6 +1,5 @@
 {
-    "private": true,
-    "name": "wallet-standard-brave",
+    "name": "@brave/wallet-standard-brave",
     "author": "Brave Software <support@brave.com>",
     "repository": "https://github.com/brave/wallet-standard-brave",
     "license": "Apache-2.0",
@@ -38,5 +37,5 @@
         "shx": "^0.3.4",
         "typescript": "^4.8.4"
     },
-    "version": null
+    "version": "0.0.1"
 }
