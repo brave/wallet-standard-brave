@@ -1,0 +1,2 @@
+src @brave/crypto-wallets-core
+package*.json @brave/crypto-wallets-core
