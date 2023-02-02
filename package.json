@@ -25,7 +25,7 @@
         "clean": "shx mkdir -p lib && shx rm -rf lib",
         "tsc": "tsc --build --verbose tsconfig.all.json",
         "package": "shx mkdir -p lib/cjs && shx echo '{ \"type\": \"commonjs\" }' > lib/cjs/package.json",
-        "build": "npm run clean && npm run tsc && npm run package"
+        "build": "npm run clean && npm run tsc && npm run package; rollup -c"
     },
     "dependencies": {
         "@solana/wallet-standard-features": "^1.0.0",
@@ -35,8 +35,14 @@
         "bs58": "^4.0.1"
     },
     "devDependencies": {
+        "@babel/preset-typescript": "^7.12.16",
+        "@rollup/plugin-commonjs": "^22.0.0",
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "@rollup/plugin-babel": "^5.2.3",
         "@types/bs58": "^4.0.1",
         "@types/node-fetch": "^2.6.2",
+        "rollup": "2.70.2",
+        "rollup-plugin-terser": "^7.0.2",
         "prettier": "^2.7.1",
         "shx": "^0.3.4",
         "typescript": "^4.8.4"
