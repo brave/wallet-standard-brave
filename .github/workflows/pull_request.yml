@@ -1,0 +1,12 @@
+name: Pull Request
+on:
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  audit:
+    name: Audit packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit packages
+        run: npm audit --audit-level moderate
