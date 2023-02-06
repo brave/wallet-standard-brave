@@ -9,6 +9,7 @@ import type {
     SolanaSignTransactionMethod,
     SolanaSignTransactionOutput,
 } from '@solana/wallet-standard-features';
+import { Transaction } from '@solana/web3.js';
 import type { Wallet } from '@wallet-standard/base';
 import type {
     ConnectFeature,
@@ -186,7 +187,7 @@ export class BraveWalletWallet implements Wallet {
             if (!isSolanaChain(chain)) throw new Error('invalid chain');
 
             const { signature } = await this.#braveWallet.signAndSendTransaction(
-                require('@solana/web3.js').Transaction.from(transaction),
+                Transaction.from(transaction),
                 {
                     preflightCommitment,
                     minContextSlot,
@@ -216,7 +217,7 @@ export class BraveWalletWallet implements Wallet {
             if (account !== this.#account) throw new Error('invalid account');
             if (chain && !isSolanaChain(chain)) throw new Error('invalid chain');
 
-            const signedTransaction = await this.#braveWallet.signTransaction(require('@solana/web3.js').Transaction.from(transaction));
+            const signedTransaction = await this.#braveWallet.signTransaction(Transaction.from(transaction));
 
             outputs.push({ signedTransaction: signedTransaction.serialize() });
         } else if (inputs.length > 1) {
@@ -233,7 +234,7 @@ export class BraveWalletWallet implements Wallet {
                 }
             }
 
-            const transactions = inputs.map(({ transaction }) => require('@solana/web3.js').Transaction.from(transaction));
+            const transactions = inputs.map(({ transaction }) => Transaction.from(transaction));
 
             const signedTransactions = await this.#braveWallet.signAllTransactions(transactions);
 
