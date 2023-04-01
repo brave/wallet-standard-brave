@@ -9,7 +9,7 @@ import type {
     SolanaSignTransactionMethod,
     SolanaSignTransactionOutput,
 } from '@solana/wallet-standard-features';
-import { Transaction, VersionedTransaction } from '@solana/web3.js';
+import { Transaction } from '@solana/web3.js';
 import type { Wallet } from '@wallet-standard/base';
 import type {
     ConnectFeature,
@@ -81,12 +81,12 @@ export class BraveWalletWallet implements Wallet {
             },
             'solana:signAndSendTransaction': {
                 version: '1.0.0',
-                supportedTransactionVersions: ['legacy', 0],
+                supportedTransactionVersions: ['legacy'],
                 signAndSendTransaction: this.#signAndSendTransaction,
             },
             'solana:signTransaction': {
                 version: '1.0.0',
-                supportedTransactionVersions: ['legacy', 0],
+                supportedTransactionVersions: ['legacy'],
                 signTransaction: this.#signTransaction,
             },
             'solana:signMessage': {
@@ -187,7 +187,7 @@ export class BraveWalletWallet implements Wallet {
             if (!isSolanaChain(chain)) throw new Error('invalid chain');
 
             const { signature } = await this.#braveWallet.signAndSendTransaction(
-                VersionedTransaction.deserialize(transaction),
+                Transaction.from(transaction),
                 {
                     preflightCommitment,
                     minContextSlot,
@@ -217,7 +217,7 @@ export class BraveWalletWallet implements Wallet {
             if (account !== this.#account) throw new Error('invalid account');
             if (chain && !isSolanaChain(chain)) throw new Error('invalid chain');
 
-            const signedTransaction = await this.#braveWallet.signTransaction(VersionedTransaction.deserialize(transaction));
+            const signedTransaction = await this.#braveWallet.signTransaction(Transaction.from(transaction));
 
             outputs.push({ signedTransaction: signedTransaction.serialize() });
         } else if (inputs.length > 1) {
