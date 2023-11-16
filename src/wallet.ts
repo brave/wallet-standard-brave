@@ -234,7 +234,7 @@ export class BraveWalletWallet implements Wallet {
                 }
             }
 
-            const transactions = inputs.map(({ transaction }) => Transaction.from(transaction));
+            const transactions = inputs.map(({ transaction }) => VersionedTransaction.deserialize(transaction));
 
             const signedTransactions = await this.#braveWallet.signAllTransactions(transactions);
 
