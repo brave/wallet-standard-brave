@@ -25,7 +25,7 @@ import bs58 from 'bs58';
 import { BraveWalletWalletAccount } from './account.js';
 import { icon } from './icon.js';
 import type { SolanaChain } from './solana.js';
-import { isSolanaChain, SOLANA_CHAINS } from './solana.js';
+import { isSolanaChain, isVersionedTransaction, SOLANA_CHAINS } from './solana.js';
 import { bytesEqual } from './util.js';
 import type { BraveWallet } from './window.js';
 
@@ -219,7 +219,16 @@ export class BraveWalletWallet implements Wallet {
 
             const signedTransaction = await this.#braveWallet.signTransaction(VersionedTransaction.deserialize(transaction));
 
-            outputs.push({ signedTransaction: signedTransaction.serialize() });
+            const serializedTransaction = isVersionedTransaction(signedTransaction)
+                ? signedTransaction.serialize()
+                : new Uint8Array(
+                      (signedTransaction as Transaction).serialize({
+                          requireAllSignatures: false,
+                          verifySignatures: false,
+                      })
+                  );
+
+            outputs.push({ signedTransaction: serializedTransaction });
         } else if (inputs.length > 1) {
             let chain: SolanaChain | undefined = undefined;
             for (const input of inputs) {
@@ -239,7 +248,18 @@ export class BraveWalletWallet implements Wallet {
             const signedTransactions = await this.#braveWallet.signAllTransactions(transactions);
 
             outputs.push(
-                ...signedTransactions.map((signedTransaction) => ({ signedTransaction: signedTransaction.serialize() }))
+                ...signedTransactions.map((signedTransaction) => {
+                    const serializedTransaction = isVersionedTransaction(signedTransaction)
+                        ? signedTransaction.serialize()
+                        : new Uint8Array(
+                              (signedTransaction as Transaction).serialize({
+                                  requireAllSignatures: false,
+                                  verifySignatures: false,
+                              })
+                          );
+
+                    return { signedTransaction: serializedTransaction };
+                })
             );
         }
 
