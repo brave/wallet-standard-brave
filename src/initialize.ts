@@ -1,7 +1,9 @@
-import { registerWallet } from './register.js';
-import { BraveWalletWallet } from './wallet.js';
-import type { BraveWallet } from './window.js';
+// This is copied from @brave/wallet-standard-brave with modifications
 
-export function initialize(braveWallet: BraveWallet): void {
-    registerWallet(new BraveWalletWallet(braveWallet));
+import { registerWallet } from './register.js';
+import { VeeraWalletWallet } from './wallet.js';
+import type { VeeraWallet } from './window.js';
+
+export function initialize(veeraWallet: VeeraWallet): void {
+    registerWallet(new VeeraWalletWallet(veeraWallet));
 }

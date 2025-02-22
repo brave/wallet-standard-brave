@@ -10,7 +10,7 @@ export default {
   output: {
     file: 'lib/index.iife.min.js',
     format: 'iife',
-    name: 'walletStandardBrave',
+    name: 'walletStandardVeera',
     sourcemap: true,
     plugins: [terser({mangle: false, compress: false})],
   },

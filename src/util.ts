@@ -1,4 +1,4 @@
-// This is copied from @wallet-standard/wallet
+// This is copied from @brave/wallet-standard-brave with modifications
 
 export function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
     return arraysEqual(a, b);

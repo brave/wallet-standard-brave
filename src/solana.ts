@@ -1,4 +1,4 @@
-// This is copied from @solana/wallet-standard-chains
+// This is copied from @brave/wallet-standard-brave with modifications
 
 import type { IdentifierString } from '@wallet-standard/base';
 import type { Transaction, VersionedTransaction } from '@solana/web3.js';
