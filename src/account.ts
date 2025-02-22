@@ -1,4 +1,4 @@
-// This is copied with modification from @wallet-standard/wallet
+// This is copied from @brave/wallet-standard-brave with modifications
 
 import type { WalletAccount } from '@wallet-standard/base';
 import { SOLANA_CHAINS } from './solana.js';
@@ -6,7 +6,7 @@ import { SOLANA_CHAINS } from './solana.js';
 const chains = SOLANA_CHAINS;
 const features = ['solana:signAndSendTransaction', 'solana:signMessage', 'solana:signTransaction'] as const;
 
-export class BraveWalletWalletAccount implements WalletAccount {
+export class VeeraWalletWalletAccount implements WalletAccount {
     readonly #address: WalletAccount['address'];
     readonly #publicKey: WalletAccount['publicKey'];
     readonly #chains: WalletAccount['chains'];
@@ -39,7 +39,7 @@ export class BraveWalletWalletAccount implements WalletAccount {
     }
 
     constructor({ address, publicKey, label, icon }: Omit<WalletAccount, 'chains' | 'features'>) {
-        if (new.target === BraveWalletWalletAccount) {
+        if (new.target === VeeraWalletWalletAccount) {
             Object.freeze(this);
         }
 

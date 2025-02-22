@@ -1,4 +1,4 @@
-// This is copied from @wallet-standard/wallet
+// This is copied from @brave/wallet-standard-brave with modifications
 
 import type {
     DEPRECATED_WalletsWindow,

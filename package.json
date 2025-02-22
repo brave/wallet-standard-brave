@@ -1,7 +1,7 @@
 {
-    "name": "@brave/wallet-standard-brave",
-    "author": "Brave Software <support@brave.com>",
-    "repository": "https://github.com/brave/wallet-standard-brave",
+    "name": "@veera/wallet-standard-veera",
+    "author": "Veera Browser <support@veera.com>",
+    "repository": "https://github.com/veera-dao/wallet-standard-veera",
     "license": "Apache-2.0",
     "engines": {
         "node": ">=16"
@@ -50,5 +50,5 @@
     "overrides": {
         "serialize-javascript": "6.0.2"
     },
-    "version": "0.0.14"
+    "version": "0.0.1"
 }

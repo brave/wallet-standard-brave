@@ -1,17 +1,19 @@
+// This is copied from @brave/wallet-standard-brave with modifications
+
 import type { PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js';
 
-export interface BraveWalletEvent {
+export interface VeeraWalletEvent {
     connect(...args: unknown[]): unknown;
     disconnect(...args: unknown[]): unknown;
     accountChanged(...args: unknown[]): unknown;
 }
 
-export interface BraveWalletEventEmitter {
-    on<E extends keyof BraveWalletEvent>(event: E, listener: BraveWalletEvent[E], context?: any): void;
-    off<E extends keyof BraveWalletEvent>(event: E, listener: BraveWalletEvent[E], context?: any): void;
+export interface VeeraWalletEventEmitter {
+    on<E extends keyof VeeraWalletEvent>(event: E, listener: VeeraWalletEvent[E], context?: any): void;
+    off<E extends keyof VeeraWalletEvent>(event: E, listener: VeeraWalletEvent[E], context?: any): void;
 }
 
-export interface BraveWallet extends BraveWalletEventEmitter {
+export interface VeeraWallet extends VeeraWalletEventEmitter {
     publicKey: PublicKey | null;
     connect(options?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }>;
     disconnect(): Promise<void>;

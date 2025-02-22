@@ -1,3 +1,5 @@
+// This is copied from @brave/wallet-standard-brave with modifications
+
 import type {
     SolanaSignAndSendTransactionFeature,
     SolanaSignAndSendTransactionMethod,
@@ -22,26 +24,26 @@ import type {
     EventsOnMethod,
 } from '@wallet-standard/features';
 import bs58 from 'bs58';
-import { BraveWalletWalletAccount } from './account.js';
+import { VeeraWalletWalletAccount } from './account.js';
 import { icon } from './icon.js';
 import type { SolanaChain } from './solana.js';
 import { isSolanaChain, isVersionedTransaction, SOLANA_CHAINS } from './solana.js';
 import { bytesEqual } from './util.js';
-import type { BraveWallet } from './window.js';
+import type { VeeraWallet } from './window.js';
 
-export type BraveWalletFeature = {
-    'braveWallet:': {
-        braveWallet: BraveWallet;
+export type VeeraWalletFeature = {
+    'veeraWallet:': {
+        veeraWallet: VeeraWallet;
     };
 };
 
-export class BraveWalletWallet implements Wallet {
+export class VeeraWalletWallet implements Wallet {
     readonly #listeners: { [E in EventsNames]?: EventsListeners[E][] } = {};
     readonly #version = '1.0.0' as const;
-    readonly #name = 'Brave Wallet' as const;
+    readonly #name = 'Veera Wallet' as const;
     readonly #icon = icon;
-    #account: BraveWalletWalletAccount | null = null;
-    readonly #braveWallet: BraveWallet;
+    #account: VeeraWalletWalletAccount | null = null;
+    readonly #veeraWallet: VeeraWallet;
 
     get version() {
         return this.#version;
@@ -65,7 +67,7 @@ export class BraveWalletWallet implements Wallet {
         SolanaSignAndSendTransactionFeature &
         SolanaSignTransactionFeature &
         SolanaSignMessageFeature &
-        BraveWalletFeature {
+        VeeraWalletFeature {
         return {
             'standard:connect': {
                 version: '1.0.0',
@@ -93,8 +95,8 @@ export class BraveWalletWallet implements Wallet {
                 version: '1.0.0',
                 signMessage: this.#signMessage,
             },
-            'braveWallet:': {
-                braveWallet: this.#braveWallet,
+            'veeraWallet:': {
+                veeraWallet: this.#veeraWallet,
             },
         };
     }
@@ -103,16 +105,16 @@ export class BraveWalletWallet implements Wallet {
         return this.#account ? [this.#account] : [];
     }
 
-    constructor(braveWallet: BraveWallet) {
-        if (new.target === BraveWalletWallet) {
+    constructor(veeraWallet: VeeraWallet) {
+        if (new.target === VeeraWalletWallet) {
             Object.freeze(this);
         }
 
-        this.#braveWallet = braveWallet;
+        this.#veeraWallet = veeraWallet;
 
-        braveWallet.on('connect', this.#connected, this);
-        braveWallet.on('disconnect', this.#disconnected, this);
-        braveWallet.on('accountChanged', this.#reconnected, this);
+        veeraWallet.on('connect', this.#connected, this);
+        veeraWallet.on('disconnect', this.#disconnected, this);
+        veeraWallet.on('accountChanged', this.#reconnected, this);
 
         this.#connected();
     }
@@ -132,14 +134,14 @@ export class BraveWalletWallet implements Wallet {
     }
 
     #connected = () => {
-        const address = this.#braveWallet.publicKey?.toBase58();
+        const address = this.#veeraWallet.publicKey?.toBase58();
         if (address) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const publicKey = this.#braveWallet.publicKey!.toBytes();
+            const publicKey = this.#veeraWallet.publicKey!.toBytes();
 
             const account = this.#account;
             if (!account || account.address !== address || !bytesEqual(account.publicKey, publicKey)) {
-                this.#account = new BraveWalletWalletAccount({ address, publicKey });
+                this.#account = new VeeraWalletWalletAccount({ address, publicKey });
                 this.#emit('change', { accounts: this.accounts });
             }
         }
@@ -153,7 +155,7 @@ export class BraveWalletWallet implements Wallet {
     };
 
     #reconnected = () => {
-        if (this.#braveWallet.publicKey) {
+        if (this.#veeraWallet.publicKey) {
             this.#connected();
         } else {
             this.#disconnected();
@@ -162,7 +164,7 @@ export class BraveWalletWallet implements Wallet {
 
     #connect: ConnectMethod = async ({ silent } = {}) => {
         if (!this.#account) {
-            await this.#braveWallet.connect(silent ? { onlyIfTrusted: true } : undefined);
+            await this.#veeraWallet.connect(silent ? { onlyIfTrusted: true } : undefined);
         }
 
         this.#connected();
@@ -171,7 +173,7 @@ export class BraveWalletWallet implements Wallet {
     };
 
     #disconnect: DisconnectMethod = async () => {
-        await this.#braveWallet.disconnect();
+        await this.#veeraWallet.disconnect();
     };
 
     #signAndSendTransaction: SolanaSignAndSendTransactionMethod = async (...inputs) => {
@@ -186,7 +188,7 @@ export class BraveWalletWallet implements Wallet {
             if (account !== this.#account) throw new Error('invalid account');
             if (!isSolanaChain(chain)) throw new Error('invalid chain');
 
-            const { signature } = await this.#braveWallet.signAndSendTransaction(
+            const { signature } = await this.#veeraWallet.signAndSendTransaction(
                 VersionedTransaction.deserialize(transaction),
                 {
                     preflightCommitment,
@@ -217,7 +219,7 @@ export class BraveWalletWallet implements Wallet {
             if (account !== this.#account) throw new Error('invalid account');
             if (chain && !isSolanaChain(chain)) throw new Error('invalid chain');
 
-            const signedTransaction = await this.#braveWallet.signTransaction(VersionedTransaction.deserialize(transaction));
+            const signedTransaction = await this.#veeraWallet.signTransaction(VersionedTransaction.deserialize(transaction));
 
             const serializedTransaction = isVersionedTransaction(signedTransaction)
                 ? signedTransaction.serialize()
@@ -245,7 +247,7 @@ export class BraveWalletWallet implements Wallet {
 
             const transactions = inputs.map(({ transaction }) => VersionedTransaction.deserialize(transaction));
 
-            const signedTransactions = await this.#braveWallet.signAllTransactions(transactions);
+            const signedTransactions = await this.#veeraWallet.signAllTransactions(transactions);
 
             outputs.push(
                 ...signedTransactions.map((signedTransaction) => {
@@ -276,7 +278,7 @@ export class BraveWalletWallet implements Wallet {
             const { message, account } = inputs[0]!;
             if (account !== this.#account) throw new Error('invalid account');
 
-            const { signature } = await this.#braveWallet.signMessage(message);
+            const { signature } = await this.#veeraWallet.signMessage(message);
 
             outputs.push({ signedMessage: message, signature });
         } else if (inputs.length > 1) {
