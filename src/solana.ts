@@ -24,7 +24,7 @@ export const SOLANA_CHAINS = [
 ] as const;
 
 /** Type of all Solana clusters */
-export type SolanaChain = typeof SOLANA_CHAINS[number];
+export type SolanaChain = (typeof SOLANA_CHAINS)[number];
 
 /**
  * Check if a chain corresponds with one of the Solana clusters.
@@ -34,7 +34,7 @@ export function isSolanaChain(chain: IdentifierString): chain is SolanaChain {
 }
 
 export function isVersionedTransaction(
-  transaction: Transaction | VersionedTransaction
+    transaction: Transaction | VersionedTransaction
 ): transaction is VersionedTransaction {
     return 'version' in transaction;
 }
