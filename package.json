@@ -17,8 +17,8 @@
         "types": "./lib/types/index.d.ts"
     },
     "files": [
-      "/lib",
-      "/src"
+        "/lib",
+        "/src"
     ],
     "scripts": {
         "fmt": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,json}'",
@@ -50,5 +50,5 @@
     "overrides": {
         "serialize-javascript": "6.0.2"
     },
-    "version": "0.0.15"
+    "version": "0.0.16"
 }
