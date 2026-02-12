@@ -38,7 +38,7 @@
         "@babel/preset-typescript": "7.27.1",
         "@rollup/plugin-commonjs": "22.0.2",
         "@rollup/plugin-node-resolve": "13.3.0",
-        "@rollup/plugin-babel": "5.3.1",
+        "@rollup/plugin-babel": "6.1.0",
         "@types/bs58": "4.0.4",
         "@types/node-fetch": "2.6.13",
         "rollup": "2.79.2",
