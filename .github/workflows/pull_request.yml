@@ -1,4 +1,4 @@
-name: Pull Request
+name: Build
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -24,6 +24,36 @@ jobs:
           node-version: 20
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Build
         run: npm run build
+      - name: Assert iife bundle exists
+        run: test -s lib/index.iife.min.js
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build
+      - name: Assert iife bundle exists
+        run: test -s lib/index.iife.min.js
+      - name: Pack
+        run: |
+          PKG=$(npm pack --silent)
+          echo "PKG_TARBALL=$PWD/$PKG" >> "$GITHUB_ENV"
+      - name: Smoke test packaged module (ESM + CJS)
+        run: |
+          mkdir -p "$RUNNER_TEMP/smoke"
+          cd "$RUNNER_TEMP/smoke"
+          npm init -y >/dev/null
+          npm install --ignore-scripts "$PKG_TARBALL" >/dev/null
+          node --input-type=module -e "import('@brave/wallet-standard-brave').then(m => { if (typeof m.initialize !== 'function') throw new Error('ESM export \"initialize\" missing'); console.log('ESM import OK'); })"
+          node -e "const m = require('@brave/wallet-standard-brave'); if (typeof m.initialize !== 'function') throw new Error('CJS export \"initialize\" missing'); console.log('CJS require OK');"
