@@ -4,7 +4,7 @@
     "repository": "https://github.com/brave/wallet-standard-brave",
     "license": "Apache-2.0",
     "engines": {
-        "node": ">=16"
+        "node": ">=20.18.0"
     },
     "type": "module",
     "sideEffects": false,
@@ -25,7 +25,8 @@
         "clean": "shx mkdir -p lib && shx rm -rf lib",
         "tsc": "tsc --build --verbose tsconfig.all.json",
         "package": "shx mkdir -p lib/cjs && shx echo '{ \"type\": \"commonjs\" }' > lib/cjs/package.json",
-        "build": "npm run clean && npm run tsc && npm run package && rollup -c"
+        "build": "npm run clean && npm run tsc && npm run package && rollup -c",
+        "test": "node --test test/*.test.mjs"
     },
     "dependencies": {
         "@solana/wallet-standard-features": "^1.3.0",

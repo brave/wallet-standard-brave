@@ -24,8 +24,8 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Build
         run: npm run build
-      - name: Assert iife bundle exists
-        run: test -s lib/index.iife.min.js
+      - name: Test build output
+        run: npm test
       - name: Verify package version matches release tag
         if: github.event_name == 'release'
         run: |
