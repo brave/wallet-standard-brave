@@ -13,8 +13,12 @@ Please file issues related to this repository in [Brave Browser repository](http
 
 ## Releasing a new version
 
-Publishing to npm is automated by the [Publish workflow](.github/workflows/publish.yml),
-which runs with provenance on every GitHub release. To cut a release, bump the
-`version` in `package.json`, merge to `master`, then create a GitHub release with a
-matching `v<version>` tag (the workflow fails on a mismatch). Once published, update
-brave-core to use the new version.
+Publishing to npm is automated by the [Publish workflow](.github/workflows/publish.yml).
+It authenticates with [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
+(GitHub Actions OIDC) and publishes with provenance. The `@brave/wallet-standard-brave`
+package on npmjs.com needs a trusted publisher for this workflow: organization `brave`,
+repository `wallet-standard-brave`, workflow filename `publish.yml`, environment left
+empty, and direct `npm publish` allowed. To cut a release, bump the `version` in
+`package.json`, merge to `master`, then create a GitHub release with a matching
+`v<version>` tag (the workflow fails on a mismatch).
+Once published, update brave-core to use the new version.
